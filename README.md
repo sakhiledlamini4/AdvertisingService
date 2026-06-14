@@ -4,11 +4,12 @@ ASP.NET Core 8 Web API using Dapper and SQL Server with JWT authentication.
 
 Quick start
 
-- Update the connection string in `appsettings.json` (`ConnectionStrings:DefaultConnection`).
-- Update `Jwt:Key` in `appsettings.json` to a secure random value for production.
+- Update the connection string in `backend/appsettings.json` (`ConnectionStrings:DefaultConnection`).
+- Update `Jwt:Key` in `backend/appsettings.json` to a secure random value for production.
 - From project folder run:
 
 ```bash
+cd backend
 dotnet restore
 dotnet build
 dotnet run
@@ -40,10 +41,10 @@ Docker
   docker compose up --build
   ```
 - The API will be available at `http://localhost:5000` and SQL Server at `localhost:1433`.
-- On startup, the `Scripts/CreateTables.sql` script is mounted and executed automatically by the `db-init` service.
+- On startup, the `backend/Scripts/CreateTables.sql` script is mounted and executed automatically by the `db-init` service.
 
 Files
 
-- See the `Controllers`, `Services`, `Repositories`, `Models`, `DTOs`, `Data`, `Middleware`, and `Extensions` folders for implementation.
+- See the `backend/Controllers`, `backend/Services`, `backend/Repositories`, `backend/Models`, `backend/DTOs`, `backend/Data`, `backend/Middleware`, and `backend/Extensions` folders for implementation.
 # AdvertisingService
 A service for small businesses to advertise their services

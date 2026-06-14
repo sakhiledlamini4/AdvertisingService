@@ -25,7 +25,7 @@ services:
     environment:
       SA_PASSWORD: "YourStrong!Passw0rd"
     volumes:
-      - ./Scripts:/scripts:ro
+      - ./backend/Scripts:/scripts:ro
     command: >
       bash -lc '
       until /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P "$SA_PASSWORD" -Q "SELECT 1" > /dev/null 2>&1; do
@@ -39,7 +39,7 @@ services:
     restart: "no"
 
   webapi:
-    build: .
+    build: ./backend
     container_name: advertisingservice-api
     depends_on:
       - db-init
