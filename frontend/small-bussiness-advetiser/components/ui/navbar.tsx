@@ -4,9 +4,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import SignInModal from "@/components/SignInModal";
+import SignUpModal from "@/components/SignUpModal";
 
 export function Navbar() {
-  const [open, setOpen] = useState(false);
+  const [signInOpen, setSignInOpen] = useState(false);
+  const [signUpOpen, setSignUpOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -32,17 +34,17 @@ export function Navbar() {
     await fetch("/api/logout", { method: "POST" });
 
     setLoggedIn(false);
-    setOpen(false);
+    setSignInOpen(false);
   }
 
   async function handleLoginSuccess() {
-    setOpen(false);
+    setSignInOpen(false);
     await checkAuth(); // re-check session after login
   }
 
   return (
     <header className="border-b">
-      <div className="container mx-auto flex h-16 items-center justify-between">
+      <div className="max-w-8xl mx-auto px-6 flex h-16 items-center justify-between">
         <Link href="/" className="font-bold">
           SB Advertiser
         </Link>
@@ -53,19 +55,35 @@ export function Navbar() {
           <Link href="/about">About</Link>
         </nav>
 
-        {loading ? null : loggedIn ? (
-          <Button onClick={handleLogout}>
-            Logout
-          </Button>
-        ) : (
-          <Button onClick={() => setOpen(true)}>
-            Sign In
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {loading ? null : loggedIn ? (
+            <Button onClick={handleLogout}>
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                onClick={() => setSignInOpen(true)}
+              >
+                Sign In
+              </Button>
+
+              <Button onClick={() => setSignUpOpen(true)}>
+                Sign Up
+              </Button>
+            </>
+          )}
+        </div>
 
         <SignInModal
-          open={open}
-          onClose={() => setOpen(false)}
+          open={signInOpen}
+          onClose={() => setSignInOpen(false)}
+          onSuccess={handleLoginSuccess}
+        />
+        <SignUpModal
+          open={signUpOpen}
+          onClose={() => setSignUpOpen(false)}
           onSuccess={handleLoginSuccess}
         />
       </div>
