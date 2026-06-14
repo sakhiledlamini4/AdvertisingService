@@ -4,12 +4,12 @@ ASP.NET Core 8 Web API using Dapper and SQL Server with JWT authentication.
 
 Quick start
 
-- Update the connection string in `backend/appsettings.json` (`ConnectionStrings:DefaultConnection`).
-- Update `Jwt:Key` in `backend/appsettings.json` to a secure random value for production.
+- Update the connection string in `backend/src/appsettings.json` (`ConnectionStrings:DefaultConnection`).
+- Update `Jwt:Key` in `backend/src/appsettings.json` to a secure random value for production.
 - From project folder run:
 
 ```bash
-cd backend
+cd backend/src
 dotnet restore
 dotnet build
 dotnet run

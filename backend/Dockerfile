@@ -1,10 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY ["AdvertisingService.csproj", "./"]
+COPY ["src/AdvertisingService.csproj", "./"]
 RUN dotnet restore "AdvertisingService.csproj"
 
-COPY . .
+COPY src/. ./
 RUN dotnet publish "AdvertisingService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
