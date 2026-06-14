@@ -1,0 +1,11 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.db
+*.DS_Store
+**/bin/
+**/obj/
+Dockerfile
+docker-compose*.yml
