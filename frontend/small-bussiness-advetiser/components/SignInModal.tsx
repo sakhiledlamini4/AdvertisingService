@@ -3,12 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { Card, CardContent } from "./ui/card";
 
-export default function SignInModal({
-  open,
-  onClose,
-  onSuccess,
-}: {
+export default function SignInModal({ open, onClose, onSuccess, }: {
   open: boolean;
   onClose: () => void;
   onSuccess?: () => void;
@@ -56,12 +53,10 @@ export default function SignInModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-      <div
-        className="bg-white p-6 rounded-lg w-96"
-        onKeyDown={handleKeyDown}
-      >
-        <h2 className="text-xl font-bold mb-4">Sign In</h2>
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+    <Card className="w-[400px]">
+      <CardContent className="p-6" onKeyDown={handleKeyDown}>
+        <h1 className="text-xl font-bold mb-4 text-center">Sign In</h1>
 
         <Input
           placeholder="Email"
@@ -78,18 +73,22 @@ export default function SignInModal({
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        {error && <p className="text-red-500 mb-2">{error}</p>}
+        {error && (
+          <p className="text-red-500 mb-2">{error}</p>
+        )}
 
-        <div className="flex justify-between">
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
+        <div className="flex flex-col gap-2 mt-4">
 
-          <Button onClick={handleLogin} disabled={loading}>
+          <Button className="w-full" onClick={handleLogin} disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </Button>
+
+          <Button variant="outline" className="w-full" onClick={onClose}>
+            Cancel
+          </Button>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
+  </div>
   );
 }
