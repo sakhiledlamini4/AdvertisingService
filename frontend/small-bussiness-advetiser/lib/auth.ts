@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 
-export async function getUser() {
-  const cookieStore = cookies();
-  const auth = (await cookieStore).get("auth");
+export async function isAuthenticated() {
+  const cookieStore = await cookies();
+  const auth = cookieStore.get("auth");
 
   return auth?.value === "logged-in";
 }

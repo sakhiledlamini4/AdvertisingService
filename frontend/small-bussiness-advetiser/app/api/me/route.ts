@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { isAuthenticated } from "@/lib/auth";
 
 export async function GET() {
-  const auth = (await cookies()).get("auth");
+  const loggedIn = await isAuthenticated();
 
-  if (!auth || auth.value !== "logged-in") {
-    return NextResponse.json({ user: null }, { status: 401 });
+  if (!loggedIn) {
+    return NextResponse.json(
+      { user: null },
+      { status: 401 }
+    );
   }
 
-  return NextResponse.json({ user: "test user" });
+  return NextResponse.json({
+    user: {
+      email: "admin@test.com",
+    },
+  });
 }
