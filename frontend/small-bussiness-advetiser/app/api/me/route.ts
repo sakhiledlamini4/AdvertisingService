@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 
@@ -11,9 +12,14 @@ export async function GET() {
     );
   }
 
+  const cookieStore = await cookies();
+  const userEmail = cookieStore.get("user-email")?.value;
+  const userId = cookieStore.get("user-id")?.value;
+
   return NextResponse.json({
     user: {
-      email: "admin@test.com",
+      id: userId ? Number(userId) : null,
+      email: userEmail ?? null,
     },
   });
 }

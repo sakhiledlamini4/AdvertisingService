@@ -5,7 +5,19 @@ export async function POST() {
 
   res.cookies.set("auth", "", {
     path: "/",
-    maxAge: 0, // 🔥 this is what actually deletes it
+    maxAge: 0,
+  });
+  res.cookies.set("access-token", "", {
+    path: "/",
+    maxAge: 0,
+  });
+  res.cookies.set("user-email", "", {
+    path: "/",
+    maxAge: 0,
+  });
+  res.cookies.set("user-id", "", {
+    path: "/",
+    maxAge: 0,
   });
 
   return res;
