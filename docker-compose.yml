@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -28,18 +27,23 @@ services:
       - ./backend/src/Scripts:/scripts:ro
     command: >
       bash -lc '
-      until /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P "$SA_PASSWORD" -Q "SELECT 1" > /dev/null 2>&1; do
+      until /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P "$$SA_PASSWORD" -Q "SELECT 1" > /dev/null 2>&1; do
         echo "Waiting for SQL Server...";
         sleep 2;
       done;
       echo "Running initialization script";
-      /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P "$SA_PASSWORD" -d master -i /scripts/CreateTables.sql;
+      /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P "$$SA_PASSWORD" -d master -i /scripts/CreateTables.sql;
       echo "Initialization complete";
       '
     restart: "no"
 
   webapi:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        DOTNET_VERSION: "10.0"
+    platform: linux/amd64
     container_name: advertisingservice-api
     depends_on:
       - db-init
@@ -52,6 +56,20 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
     ports:
       - "5000:80"
+
+  frontend:
+    build:
+      context: ./frontend/small-bussiness-advetiser
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    container_name: advertisingservice-frontend
+    environment:
+      NODE_ENV: production
+      BACKEND_URL: "http://webapi:80"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - webapi
 
 volumes:
   sqlserverdata:

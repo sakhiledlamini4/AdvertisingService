@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+const backendBaseUrl = process.env.BACKEND_URL ?? "http://webapi:80";
+
 export async function POST(req: Request) {
   const body = await req.json();
   const { firstName, lastName, email, password } = body;
@@ -11,15 +13,15 @@ export async function POST(req: Request) {
     );
   }
 
-  // ⚠️ Fake "registration"
-  console.log("New user:", {
-    firstName,
-    lastName,
-    email,
-    password,
+  const backendResponse = await fetch(`${backendBaseUrl}/api/account/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ firstName, lastName, email, password }),
+    cache: "no-store",
   });
 
-  return NextResponse.json({
-    message: "User created successfully",
-  });
+  const responseBody = await backendResponse.json();
+  return NextResponse.json(responseBody, { status: backendResponse.status });
 }

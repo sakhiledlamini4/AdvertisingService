@@ -1,0 +1,11 @@
+node_modules
+.npm
+.next
+out
+dist
+.DS_Store
+npm-debug.log*
+yarn-error.log*
+.vscode
+.idea
+*.log

@@ -4,7 +4,8 @@ using AdvertisingService.Repositories;
 using AdvertisingService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
+using System.Collections.Generic;
 using System.Text;
 
 namespace AdvertisingService.Extensions
@@ -63,10 +64,17 @@ namespace AdvertisingService.Extensions
                     Description = "Enter 'Bearer {token}'"
                 };
                 c.AddSecurityDefinition("Bearer", jwtScheme);
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                var securityRequirement = new OpenApiSecurityRequirement();
+                var securitySchemeReference = new OpenApiSecuritySchemeReference("Bearer", null, null)
                 {
-                    { jwtScheme, Array.Empty<string>() }
-                });
+                    Reference = new OpenApiReferenceWithDescription
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+                securityRequirement.Add(securitySchemeReference, new List<string>());
+                c.AddSecurityRequirement(_ => securityRequirement);
             });
 
             return services;
