@@ -20,6 +20,21 @@ namespace AdvertisingService.Middleware
             {
                 await _next(context);
             }
+            catch (ApplicationException ex)
+            {
+                _logger.LogWarning(ex, "Application error");
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+                var response = new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = ex.Message,
+                    Data = null
+                };
+
+                await context.Response.WriteAsJsonAsync(response);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unhandled exception");
@@ -29,7 +44,7 @@ namespace AdvertisingService.Middleware
                 var response = new ApiResponse<object>
                 {
                     Success = false,
-                    Message = ex.Message,
+                    Message = "An unexpected error occurred.",
                     Data = null
                 };
 

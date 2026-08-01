@@ -1,10 +1,12 @@
 using AdvertisingService.DTOs;
 using AdvertisingService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdvertisingService.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {

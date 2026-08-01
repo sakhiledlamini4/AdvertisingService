@@ -24,7 +24,7 @@ export default function RegisterModal({  open, onClose, onSuccess, }: {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
